@@ -1,3 +1,8 @@
+// File Name: todo.js
+// Student Name: Fatimah Binti Yasin
+// Student ID:  301193282
+// WebApp name: To-Do
+
 // create a reference to the model
 let TodoModel = require('../models/todo');
 
@@ -48,6 +53,25 @@ module.exports.details = (req, res, next) => {
 module.exports.displayEditPage = (req, res, next) => {
     
     // ADD YOUR CODE HERE
+    let id = req.params.id;
+
+    TodoModel.findById(id, (err, todoToEdit) => {
+        if(err)
+        {
+            console.log(err);
+            res.end(err);
+        }
+        else
+        {
+            //show the edit view
+            res.render('todo/add_edit', {
+                title: 'Edit To-Do', 
+                todo: todoToEdit,
+                userName: req.user ? req.user.username : ''
+            })
+        }
+    });
+
 
 }
 
@@ -67,6 +91,18 @@ module.exports.processEditPage = (req, res, next) => {
 
     // ADD YOUR CODE HERE
 
+    TodoModel.updateOne({_id: id}, updatedTodo, (err) => {
+        if(err)
+        {
+            console.log(err);
+            res.end(err);
+        }
+        else
+        {
+            res.redirect('/todo/list');
+        }
+    })
+
 }
 
 // Deletes a todo based on its id.
@@ -74,13 +110,33 @@ module.exports.performDelete = (req, res, next) => {
 
     // ADD YOUR CODE HERE
 
+    let id = req.params.id;
+
+    TodoModel.remove({_id: id}, (err) => {
+        if(err)
+        {
+            console.log(err);
+            res.end(err);
+        }
+        else
+        {
+            res.redirect('/todo/list');
+        }
+    });
 }
 
 // Renders the Add form using the add_edit.ejs template
 module.exports.displayAddPage = (req, res, next) => {
 
-    // ADD YOUR CODE HERE          
+    // ADD YOUR CODE HERE  
+    
+    let newTodo = TodoModel();
 
+    res.render('todo/add_edit', {
+        title: 'Add a new Todo',
+        todo: newTodo,
+        userName: req.user ? req.user.username : ''
+    })
 }
 
 // Processes the data submitted from the Add form to create a new todo
@@ -96,5 +152,18 @@ module.exports.processAddPage = (req, res, next) => {
     });
 
     // ADD YOUR CODE HERE
+
+    TodoModel.create(newTodo, (err, item) =>{
+        if(err)
+        {
+            console.log(err);
+            res.end(err);
+        }
+        else
+        {
+            console.log(newTodo);
+            res.redirect('/todo/list');
+        }
+    })
     
 }

@@ -1,3 +1,8 @@
+// File Name: passport.js
+// Student Name: Fatimah Binti Yasin
+// Student ID:  301193282
+// WebApp name: To-Do
+
 const passport = require('passport');
 
 module.exports = function() {

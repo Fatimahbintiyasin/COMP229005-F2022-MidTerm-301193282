@@ -1,3 +1,8 @@
+// File Name: user.js
+// Student Name: Fatimah Binti Yasin
+// Student ID:  301193282
+// WebApp name: To-Do
+
 let User = require('../models/user');
 let passport = require('passport');
 
